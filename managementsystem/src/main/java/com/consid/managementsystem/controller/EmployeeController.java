@@ -2,6 +2,8 @@ package com.consid.managementsystem.controller;
 
 
 
+import java.sql.SQLException;
+
 import javax.validation.Valid;
 
 import com.consid.managementsystem.model.Employee;
@@ -39,7 +41,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/saveEmployee")
-    public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result, Model model){
+    public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result, Model model) throws SQLException{
         if(result.hasErrors()){
             return "new_employee";
         }
@@ -48,12 +50,11 @@ public class EmployeeController {
         employee.setSalary(funcCon.calculateSalary(employee));
         //Function that checks if there is a CEO, only if the updated or created employee is marked as CEO, 
         //return a String depending on the result.
-        //String areThereACeo = funcCon.checkForCeo(employee, model);
-       // if(areThereACeo.equals("false")){
-        //    //Save employee to database
-        //    employeeService.saveEmployee(employee);
-        //}
-        employeeService.saveEmployee(employee);
+        String areThereACeo = funcCon.checkForCeo(employee, model);
+        if(areThereACeo.equals("false")){
+            //Save employee to database
+            employeeService.saveEmployee(employee);
+        }
         return "redirect:/";
     }
 

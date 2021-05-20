@@ -34,6 +34,7 @@ public class EmployeeServiceImpm implements EmployeeService{
             employee = optional.get();
         } else {
             throw new RuntimeException(" Employee not found for id :: " + id);
+            
         }
         return employee;
     }

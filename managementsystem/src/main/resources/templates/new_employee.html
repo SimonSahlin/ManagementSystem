@@ -48,8 +48,7 @@
 
             <h6>Enter who the manager for this employee is, enter the Employee ID:</h6>
             <input type ="text" th:field ="*{managerId}" placeholder="Who is this employees manager?" class ="form-control mb-4 col-4">
-            <div class="alert alert-danger" th:if="${#fields.hasErrors('managerId')}" th:errors="*{managerId}"></div>
-
+        
             <button type ="submit" class="btn btn-info col-2"> Save Employee </button>
         </form>
         <hr>
