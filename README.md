@@ -5,7 +5,7 @@ Web Application for a Management System
 
 ---------- Languages and implementations ----------
 
-The program is written in HTML and Java using Thymeleaf and Spring boot. Classic MVC-model and connection to a workbench MySQL. 
+The program is written in HTML and Java using Thymeleaf and Spring boot. Classic MVC-model and connection to workbench MySQL. 
 
 ---------------------------------------------------
 
