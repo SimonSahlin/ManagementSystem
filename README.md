@@ -1,7 +1,7 @@
 # ManagementSystem
 Web Application for a Management System
 
----------- Quick describtion of the project ----------
+---------- Quick description of the project ----------
 
 The program is a management system that creates, updates and deletes employees. There is employees, managers and Ceo:s as employees. 
 All employees but the ceo does have a manager, also the managers. The manager of each employee is defiened by a managerId that correlates with each Employee Id. 
