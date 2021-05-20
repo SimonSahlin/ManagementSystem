@@ -1,11 +1,10 @@
 package com.consid.managementsystem.controller;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.consid.managementsystem.model.Employee;
-import com.consid.managementsystem.repository.EmployeeReposity;
-
+import com.consid.managementsystem.service.EmployeeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,25 +25,28 @@ public class FunctionsController {
         }
         return salary;
     }
-    
+    /*
     @Autowired
-    private EmployeeReposity employeeReposity;
+    private EmployeeService employeeService;
 
-    public boolean checkForCeo(@ModelAttribute("employee") Employee employee, Model model){
-        List<Employee> listEmployees = employeeReposity.findAll();
-        List<String> areThereACeo = new ArrayList<>();
-        boolean checkForCeo = false;
+    public String checkForCeo(@ModelAttribute("employee") Employee employee, Model model){
+        LinkedList<String> listEmployees = new LinkedList<>();
 
+        model.addAllAttributes(listEmployees);
+        
+        
+        String checkForCeo = "false";
+        
         if(employee.getIsCeo().equals("Yes")){
             for(int i = 0; i < listEmployees.size(); i++){
-                areThereACeo.add(listEmployees.get(i).getIsCeo());
+                
                 if(areThereACeo.get(i).contains("Yes")){
-                    checkForCeo = true;
+                    checkForCeo = "true";
                     return checkForCeo;
                 }
             } 
         }
         return checkForCeo;
-    }
+    }*/
 
 }

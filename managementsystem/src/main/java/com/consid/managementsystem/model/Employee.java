@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
 
 
 @Entity
@@ -16,15 +20,23 @@ public class Employee {
     private long id;
 
     @Column(name = "name")
+    @NotNull(message = "Name cant be blank!")
+    @Size(min = 2, max = 60, message="Name has to be atleast 2 characters and no more than 60 characters.")
     private String name;
-
+    
     @Column(name = "salary")
+    @NotNull()
+    @Range(min = 1, message = "You need to choose a rank!")
     private int salary;
 
     @Column(name = "is_manager")
+    @NotNull(message ="*")
+    @Range(min = 1, message ="Choose Yes or No")
     private String ismanager;
-    
+
     @Column(name = "is_ceo")
+    @NotNull()
+    @Range(min = 1, message ="Choose Yes or No")
     private String isceo;
 
     @Column(name = "manager_id")
