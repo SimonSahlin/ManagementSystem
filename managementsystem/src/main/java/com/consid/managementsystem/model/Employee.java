@@ -30,13 +30,11 @@ public class Employee {
     private int salary;
 
     @Column(name = "is_manager")
-    @NotNull(message ="*")
-    @Range(min = 1, message ="Choose Yes or No")
+    @NotNull(message ="Enter Yes or No")
     private String ismanager;
 
     @Column(name = "is_ceo")
-    @NotNull()
-    @Range(min = 1, message ="Choose Yes or No")
+    @NotNull(message ="Enter Yes or No")
     private String isceo;
 
     @Column(name = "manager_id")
