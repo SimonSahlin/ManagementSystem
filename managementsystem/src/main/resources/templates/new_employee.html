@@ -21,6 +21,7 @@
             <br><br>
             <h6>Enter Employees Name: </h6>
             <input type ="text" th:field ="*{name}" placeholder="Employee Name" class ="form-control mb-4 col-4">
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
             <h6>Enter Employees Rank, 1-10: </h6>
             1 <input type ="radio" th:field ="*{salary}" value=1 /> 
@@ -33,18 +34,22 @@
             8 <input type ="radio" th:field ="*{salary}" value=8 /> 
             9 <input type ="radio" th:field ="*{salary}" value=9 /> 
             10 <input type ="radio" th:field ="*{salary}" value=10 />
-            
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></div>
+
             <h6>Is the employee a Manager?</h6>
-            <input type ="radio" th:field ="*{isManager}" value="Yes"/> Yes
-            <input type ="radio" th:field ="*{isManager}" value="No" /> No
+            Yes <input type ="radio" th:field ="*{isManager}" value="Yes"/>
+            No <input type ="radio" th:field ="*{isManager}" value="No" />
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('isManager')}" th:errors="*{isManager}"></div>
 
             <h6>Is the Employee the CEO?</h6>
-            <input type ="radio" th:field ="*{isCeo}" value="Yes"/> Yes
-            <input type ="radio" th:field ="*{isCeo}" value="No" /> No
+            Yes <input type ="radio" th:field ="*{isCeo}" value="Yes"/>
+            No <input type ="radio" th:field ="*{isCeo}" value="No" />
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('isCeo')}" th:errors="*{isCeo}"></div>
 
             <h6>Enter who the manager for this employee is, enter the Employee ID:</h6>
             <input type ="text" th:field ="*{managerId}" placeholder="Who is this employees manager?" class ="form-control mb-4 col-4">
-        
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('managerId')}" th:errors="*{managerId}"></div>
+
             <button type ="submit" class="btn btn-info col-2"> Save Employee </button>
         </form>
         <hr>

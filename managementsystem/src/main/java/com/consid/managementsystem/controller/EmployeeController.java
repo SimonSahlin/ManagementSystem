@@ -1,11 +1,16 @@
 package com.consid.managementsystem.controller;
 
+
+
+import javax.validation.Valid;
+
 import com.consid.managementsystem.model.Employee;
 import com.consid.managementsystem.service.EmployeeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,18 +37,23 @@ public class EmployeeController {
         model.addAttribute("employee", employee);
         return "new_employee";
     }
+
     @PostMapping("/saveEmployee")
-    public String saveEmployee(@ModelAttribute("employee") Employee employee){
+    public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result, Model model){
+        if(result.hasErrors()){
+            return "new_employee";
+        }
         //Set the correct salary based on rank and if the employee is manger or ceo (Done from another controller to minimize logic here)
         FunctionsController funcCon = new FunctionsController();
         employee.setSalary(funcCon.calculateSalary(employee));
         //Function that checks if there is a CEO, only if the updated or created employee is marked as CEO, 
-        //return a boolean depending on the result.
-        boolean areThereACeo = funcCon.checkForCeo(employee, null);
-        if(areThereACeo = false){
-            //Save employee to database
-            employeeService.saveEmployee(employee);
-        }
+        //return a String depending on the result.
+        //String areThereACeo = funcCon.checkForCeo(employee, model);
+       // if(areThereACeo.equals("false")){
+        //    //Save employee to database
+        //    employeeService.saveEmployee(employee);
+        //}
+        employeeService.saveEmployee(employee);
         return "redirect:/";
     }
 
