@@ -18,13 +18,14 @@
         <hr>
         <h2> Update Employee </h2>
         
-        <form action="#" th:action ="@{/saveEmployee}" th:object ="${employee}", method="POST"> 
+        <form action="#" th:action ="@{/saveUpdatedEmployee}" th:object ="${employee}", method="POST"> 
             <br><br>
             <!--Add form field to handle update-->
             <input type="hidden" th:field="*{id}" />
 
             <h6>Enter Employees Name: </h6>
             <input type ="text" th:field ="*{name}" class ="form-control mb-4 col-4">
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
             <h6>Enter Employees Rank, 1-10: </h6>
             1 <input type ="radio" th:field ="*{salary}" value=1 /> 
@@ -37,14 +38,17 @@
             8 <input type ="radio" th:field ="*{salary}" value=8 /> 
             9 <input type ="radio" th:field ="*{salary}" value=9 /> 
             10 <input type ="radio" th:field ="*{salary}" value=10 />
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></div>
 
             <h6>Is the employee a Manager?</h6>
             <input type ="radio" th:field ="*{isManager}" value="Yes"/> Yes
             <input type ="radio" th:field ="*{isManager}" value="No" /> No
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('isManager')}" th:errors="*{isManager}"></div>
 
             <h6>Is the Employee the CEO?</h6>
             <input type ="radio" th:field ="*{isCeo}" value="Yes"/> Yes
             <input type ="radio" th:field ="*{isCeo}" value="No" /> No
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('isCeo')}" th:errors="*{isCeo}"></div>
 
             <h6>Enter who the manager for this employee is, enter the Employee ID:</h6>
             <input type ="text" th:field ="*{managerId}" class ="form-control mb-4 col-4">
