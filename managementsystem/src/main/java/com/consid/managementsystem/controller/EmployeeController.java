@@ -1,7 +1,5 @@
 package com.consid.managementsystem.controller;
 
-
-
 import java.sql.SQLException;
 
 import javax.validation.Valid;
@@ -41,21 +39,28 @@ public class EmployeeController {
     }
 
     @PostMapping("/saveEmployee")
-    public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result, Model model) throws SQLException{
+    public String saveEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result) throws SQLException{
         if(result.hasErrors()){
             return "new_employee";
         }
         //Set the correct salary based on rank and if the employee is manger or ceo (Done from another controller to minimize logic here)
-        FunctionsController funcCon = new FunctionsController();
-        employee.setSalary(funcCon.calculateSalary(employee));
-        //Function that checks if there is a CEO, only if the updated or created employee is marked as CEO, 
-        //return a String depending on the result.
-        String areThereACeo = funcCon.checkForCeo(employee, model);
-        if(areThereACeo.equals("false")){
+        Validations validation = new Validations();
+        employee.setSalary(validation.calculateSalary(employee));
+
+        //Function that sets variable as "true" if there is a CEO, only if the updated or created employee is marked as CEO.
+        String areThereACeo = validation.checkForCeo(employee);
+        //Function that sets variable as true but only if the ManagerId that is set does have a correlating EmployeeId that is a manager.
+        String isMangerIdAManager = validation.checkForEmployeeIdAsManagerId(employee);
+
+        if(areThereACeo.equals("false") && isMangerIdAManager.equals("true")){
             //Save employee to database
             employeeService.saveEmployee(employee);
+            return "redirect:/";
         }
-        return "redirect:/";
+        //Type out that there already is a CEO and that the CEO needs to be updated/deleted OR  
+        
+        //That the managerId is wrong, eaither EmployeeId doesnt exist OR The employee isnt a manager.
+        return "new_employee";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
@@ -71,6 +76,7 @@ public class EmployeeController {
     @GetMapping("/deleteEmployee/{id}")
     public String deleteEmployee(@PathVariable (value ="id") long id){
         //call the delete employee method
+
         this.employeeService.deleteEmployeeById(id);
         return "redirect:/";
     }
