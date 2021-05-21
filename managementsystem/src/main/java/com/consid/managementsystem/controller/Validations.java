@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class Validations {
 
 
-
+    //Calculating the salary based on rank, if the employee is a manager and if the employee is the CEO.
     public int calculateSalary(@ModelAttribute("employee") Employee employee){
         int salary;
         if (employee.getIsManager().equals("Yes") && employee.getIsCeo().equals("Yes")){
@@ -94,7 +94,7 @@ public class Validations {
         return isManager;
     }
 
-
+    //Checking if the employeeId is valid and if the EmployeeId is a manager.
     public String checkForEmployeeIdAsManagerId(@ModelAttribute("employee") Employee employee) throws SQLException{
         
         LinkedList<String> employeeIds = fetchEmployeeId();
