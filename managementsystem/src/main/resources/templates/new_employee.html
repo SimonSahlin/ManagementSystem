@@ -36,12 +36,12 @@
             10 <input type ="radio" th:field ="*{salary}" value=10 />
             <div class="alert alert-danger" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></div>
 
-            <h6>Is the employee a Manager?</h6>
-            Yes <input type ="radio" th:field ="*{isManager}" value="Yes"/>
-            No <input type ="radio" th:field ="*{isManager}" value="No" />
+            <h6>Is the employee a Manager? </h6>
+            Yes <input type ="radio" th:field ="*{isManager}" value="Yes">
+            No <input type ="radio" th:field ="*{isManager}" value="No">
             <div class="alert alert-danger" th:if="${#fields.hasErrors('isManager')}" th:errors="*{isManager}"></div>
 
-            <h6>Is the Employee the CEO?</h6>
+            <h6>Is the Employee the CEO? </h6>
             Yes <input type ="radio" th:field ="*{isCeo}" value="Yes"/>
             No <input type ="radio" th:field ="*{isCeo}" value="No" />
             <div class="alert alert-danger" th:if="${#fields.hasErrors('isCeo')}" th:errors="*{isCeo}"></div>
