@@ -49,12 +49,77 @@ public class EmployeeController {
         Validations validation = new Validations();
         employee.setSalary(validation.calculateSalary(employee));
 
-        //Function that sets variable as "true" if there is a CEO, only if the updated or created employee is marked as CEO.
+        //Function that sets variable as "true" if there is a CEO, only if the updated or created employee is marked as CEO otherwise "false".
         String areThereACeo = validation.checkForCeo(employee);
-        //Function that sets variable as true but only if the ManagerId that is set does have a correlating EmployeeId that is a manager.
-        String isMangerIdAManager = validation.checkForEmployeeIdAsManagerId(employee);
+        //Function that sets variable as "true" but only if the ManagerId that is set does have a correlating EmployeeId that is a manager otherwise "false".
+        String isManagerIdAManager = validation.checkForEmployeeIdAsManagerId(employee);
 
-        if(areThereACeo.equals("false") && isMangerIdAManager.equals("true")){
+        //IF-statement if the employee that is created is the CEO.
+        if(employee.getIsCeo().equals("Yes") && employee.getIsManager().equals("No")){
+            System.out.println("The CEO has to be a manager!");
+            return "new_employee";
+        } 
+        //IF-statment that if the created employee is CEO and is manager
+        else if (employee.getIsCeo().equals("Yes") && employee.getIsManager().equals("Yes")){
+            if(areThereACeo.equals("true")){
+                System.out.println("There already is a CEO, please remove current CEO before adding a new one.");
+                return "new_employee";
+            } else if (areThereACeo.equals("false")){
+                //Save employee to database
+                employeeService.saveEmployee(employee);
+                System.out.println("Successfully added the employee");
+                return "redirect:/";
+            }
+        }
+        //IF-statement that if the employee that is created isnt CEO, then the employee needs a manager!
+        if(employee.getIsCeo().equals("No")){
+            if(isManagerIdAManager.equals("false")){
+                System.out.println("Need to set a correct EmployeeId as managerId!");
+                return "new_employee";
+            }
+            //Save employee to database
+            employeeService.saveEmployee(employee);
+            System.out.println("Successfully added the employee");
+            return "redirect:/";
+        }
+        //Something went very wrong, should be impossible to get here.
+        System.out.println("Something went very wrong, should be impossible to get here.");
+        return "new_employee";
+    }
+   
+    //Same as above but for the UPDATEDemployee
+    @PostMapping("/saveUpdatedEmployee")
+    public String saveUpdatedEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result) throws SQLException{
+        if(result.hasErrors()){
+            return "new_employee";
+        }
+        //Set the correct salary based on rank and if the employee is manger or ceo (Done from another controller to minimize logic here)
+        Validations validation = new Validations();
+        employee.setSalary(validation.calculateSalary(employee));
+
+        //Function that sets variable as "true" if there is a CEO, only if the updated or created employee is marked as CEO otherwise "false".
+        String areThereACeo = validation.checkForCeo(employee);
+        //Function that sets variable as "true" but only if the ManagerId that is set does have a correlating EmployeeId that is a manager otherwise "false".
+        String isManagerIdAManager = validation.checkForEmployeeIdAsManagerId(employee);
+
+        //IF-statement if the employee that is created is the CEO.
+        if(employee.getIsCeo().equals("Yes") && employee.getIsManager().equals("No")){
+            System.out.println("The CEO has to be a manager!");
+            return "new_employee";
+        } 
+        if (employee.getIsCeo().equals("Yes") && employee.getIsManager().equals("Yes")){
+            if(areThereACeo.equals("true")){
+                System.out.println("There already is a CEO, please remove current CEO before adding a new one.");
+                return "new_employee";
+            } else if (areThereACeo.equals("false")){
+                //Save employee to database
+                employeeService.saveEmployee(employee);
+                System.out.println("Successfully added the employee");
+                return "redirect:/";
+            }
+        }
+        //IF-statement that if the employee that is created isnt CEO, then the employee needs a manager!
+        if(areThereACeo.equals("false") && isManagerIdAManager.equals("true")){
             //Save employee to database
             employeeService.saveEmployee(employee);
             System.out.println("Successfully added the employee");
@@ -64,33 +129,6 @@ public class EmployeeController {
         //That the managerId is wrong, eaither EmployeeId doesnt exist OR The employee isnt a manager.
         System.out.println("There is already a CEO, you choose an employeeId as ManagerID that doesnt exist OR the EmployeeId set as manager isnt a manager.");
         return "new_employee";
-    }
-   
-    //Same as above but for the UPDATEDemployee
-    @PostMapping("/saveUpdatedEmployee")
-    public String saveUpdatedEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result) throws SQLException{
-        if(result.hasErrors()){
-            return "update_employee";
-        }
-        //Set the correct salary based on rank and if the employee is manger or ceo (Done from another controller to minimize logic here)
-        Validations validation = new Validations();
-        employee.setSalary(validation.calculateSalary(employee));
-
-        //Function that sets variable as "true" if there is a CEO, only if the updated or created employee is marked as CEO.
-        String areThereACeo = validation.checkForCeo(employee);
-        //Function that sets variable as true but only if the ManagerId that is set does have a correlating EmployeeId that is a manager.
-        String isMangerIdAManager = validation.checkForEmployeeIdAsManagerId(employee);
-
-        if(areThereACeo.equals("false") && isMangerIdAManager.equals("true")){
-            //Save employee to database
-            employeeService.saveEmployee(employee);
-            System.out.println("Successfully added the employee");
-            return "redirect:/";
-        }
-        //Type out that there already is a CEO and that the CEO needs to be updated/deleted OR  
-        //That the managerId is wrong, eaither EmployeeId doesnt exist OR The employee isnt a manager.
-        System.out.println("There is already a CEO, you choose an employeeId as ManagerID that doesnt exist OR the EmployeeId set as manager isnt a manager.");
-        return "update_employee";
     }
     
     //Showing the page with a Post-Form to updated a employee
@@ -106,15 +144,19 @@ public class EmployeeController {
 
     //Deleting a employee unless the employee manage other employees.
     @GetMapping("/deleteEmployee/{id}")
-    public String deleteEmployee(@PathVariable (value ="id") long id){
-        System.out.println("You cant delete this employee becuse this employee is manager of others, please updated those first.");
-       
+    public String deleteEmployee(@PathVariable (value ="id") long id) throws SQLException{
+        Validations validation = new Validations();
+        String isTheEmployeeAManager = validation.isTheEmployeeAManager(id);
+        String doesTheManagerManageAnEmployee = validation.doesTheManagerManageAnyone(id);
+        if(isTheEmployeeAManager.equals("Yes") && doesTheManagerManageAnEmployee.equals("Yes")){
+            //Print out a wrong message!
+            System.out.println("You Cant delete this employee becuse this employee is a manager, update the employees this employee manage. Before deleting.");
+            return "redirect:/";
+
+        }
         //call the delete employee method
         this.employeeService.deleteEmployeeById(id);
         return "redirect:/";
-
-        
-        
     }
 
 }
