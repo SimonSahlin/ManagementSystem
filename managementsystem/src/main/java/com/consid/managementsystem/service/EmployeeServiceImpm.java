@@ -152,4 +152,18 @@ public class EmployeeServiceImpm implements EmployeeService {
         return theManagerManageAnEmployee;
     }
 
+    public int currentCeoEmployeeId(){
+        List<Employee> employeesInDb = getAllEmployees();
+        
+        int theCeosEmployeeId; 
+
+        for(int i = 0; i < employeesInDb.size(); i++){
+            if(employeesInDb.get(i).getIsCeo().equals("Yes")){
+                theCeosEmployeeId = employeesInDb.get(i).getId();
+                return theCeosEmployeeId;
+            }
+        }
+        return 0;
+    }
+
 }

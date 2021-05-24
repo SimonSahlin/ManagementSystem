@@ -86,18 +86,33 @@ public class EmployeeController {
             System.out.println("The CEO cant have a manager!");
             return "new_employee";
         }
+        // If the employee isnt a CEO nor a manager then the employee can only answer to
+        // a manager and not the CEO.
+        try {
+            if (employee.getIsManager().equals("No")
+                    && Integer.parseInt(employee.getManagerId()) == employeeService.currentCeoEmployeeId()) {
+                System.out.println("The Employee cant have the CEO as manager, change to a manager.");
+                return "new_employee";
+            }
+        } catch (Exception e) {
 
+        }
         // IF-statement that if the employee that is created isnt CEO, then the employee
         // needs a manager!
         if (employee.getIsCeo().equals("No")) {
             if (isManagerIdAManager.equals("false")) {
                 System.out.println("Need to set a correct EmployeeId as managerId!");
                 return "new_employee";
+            } else if (employee.getIsManager().equals("No")
+                    && Integer.parseInt(employee.getManagerId()) == employeeService.currentCeoEmployeeId()) {
+                    System.out.println("The Employee cant have the CEO as manager, change to a manager.");
+                    return "new_employee";
+                } else {
+                // Save employee to database
+                employeeService.saveEmployee(employee);
+                System.out.println("Successfully added the employee");
+                return "redirect:/";
             }
-            // Save employee to database
-            System.out.println("Successfully added the employee");
-            employeeService.saveEmployee(employee);
-            return "redirect:/";
         }
         // Something went very wrong, should be impossible to get here.
         System.out.println("Something went very wrong, should be impossible to get here.");
@@ -106,8 +121,8 @@ public class EmployeeController {
 
     // Same as above but for the UPDATEDEmployee!
     @PostMapping("/saveUpdatedEmployee")
-    public String saveUpdatedEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result, int id)
-            throws SQLException {
+    public String saveUpdatedEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result,
+            int id) throws SQLException {
         if (result.hasErrors()) {
             return "update_employee";
         }
@@ -130,7 +145,7 @@ public class EmployeeController {
         // IF-statment that if the created employee is CEO and is manager
         else if (employee.getIsCeo().equals("Yes") && employee.getIsManager().equals("Yes")
                 && employee.getManagerId().equals("")) {
-            if(updateCurrentCeo.equals("true")){
+            if (updateCurrentCeo.equals("true")) {
                 // Save employee to database
                 employeeService.saveEmployee(employee);
                 System.out.println("Successfully added the employee");
@@ -158,11 +173,16 @@ public class EmployeeController {
             if (isManagerIdAManager.equals("false")) {
                 System.out.println("Need to set a correct EmployeeId as managerId!");
                 return "update_employee";
+            } else if (employee.getIsManager().equals("No")
+                    && Integer.parseInt(employee.getManagerId()) == employeeService.currentCeoEmployeeId()) {
+                    System.out.println("The Employee cant have the CEO as manager, change to a manager.");
+                    return "update_employee";
+                } else {
+                // Save employee to database
+                employeeService.saveEmployee(employee);
+                System.out.println("Successfully added the employee");
+                return "redirect:/";
             }
-            // Save employee to database
-            System.out.println("Successfully added the employee");
-            employeeService.saveEmployee(employee);
-            return "redirect:/";
         }
         // Something went very wrong, should be impossible to get here.
         System.out.println("Something went very wrong, should be impossible to get here.");
