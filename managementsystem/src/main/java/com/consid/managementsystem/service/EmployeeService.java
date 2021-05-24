@@ -24,4 +24,6 @@ public interface EmployeeService {
     public String doesTheManagerManageAnyone(int id);
 
     public String isTheUpdatedEmployeeCurrentCeo(Employee employee);
+    
+    public int currentCeoEmployeeId();
 }
