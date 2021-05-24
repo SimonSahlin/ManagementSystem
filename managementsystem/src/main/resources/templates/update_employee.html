@@ -1,65 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Employee Management System</title>
-        
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
-    crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
+
 <body>
-    <div class ="container">
+    <div class="container">
         <h1> Employee Management System</h1>
         <hr>
         <h2> Update Employee </h2>
-        
-        <form action="#" th:action ="@{/saveUpdatedEmployee}" th:object ="${employee}", method="POST"> 
+
+        <form action="#" th:action="@{/saveUpdatedEmployee}" th:object="${employee}" , method="POST">
             <br><br>
             <!--Add form field to handle update-->
             <input type="hidden" th:field="*{id}" />
 
             <h6>Enter Employees Name: </h6>
-            <input type ="text" th:field ="*{name}" class ="form-control mb-4 col-4">
+            <input type="text" th:field="*{name}" class="form-control mb-4 col-4">
             <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
             <h6>Enter Employees Rank, 1-10: </h6>
-            1 <input type ="radio" th:field ="*{salary}" value=1 /> 
-            2 <input type ="radio" th:field ="*{salary}" value=2 /> 
-            3 <input type ="radio" th:field ="*{salary}" value=3 /> 
-            4 <input type ="radio" th:field ="*{salary}" value=4 />
-            5 <input type ="radio" th:field ="*{salary}" value=5 />
-            6 <input type ="radio" th:field ="*{salary}" value=6 /> 
-            7 <input type ="radio" th:field ="*{salary}" value=7 /> 
-            8 <input type ="radio" th:field ="*{salary}" value=8 /> 
-            9 <input type ="radio" th:field ="*{salary}" value=9 /> 
-            10 <input type ="radio" th:field ="*{salary}" value=10 />
+            1 <input type="radio" th:field="*{salary}" value=1 />
+            2 <input type="radio" th:field="*{salary}" value=2 />
+            3 <input type="radio" th:field="*{salary}" value=3 />
+            4 <input type="radio" th:field="*{salary}" value=4 />
+            5 <input type="radio" th:field="*{salary}" value=5 />
+            6 <input type="radio" th:field="*{salary}" value=6 />
+            7 <input type="radio" th:field="*{salary}" value=7 />
+            8 <input type="radio" th:field="*{salary}" value=8 />
+            9 <input type="radio" th:field="*{salary}" value=9 />
+            10 <input type="radio" th:field="*{salary}" value=10 />
             <div class="alert alert-danger" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></div>
 
             <h6>Is the employee a Manager?</h6>
-            <input type ="radio" th:field ="*{isManager}" value="Yes"/> Yes
-            <input type ="radio" th:field ="*{isManager}" value="No" /> No
+            <input type="radio" th:field="*{isManager}" value="Yes" /> Yes
+            <input type="radio" th:field="*{isManager}" value="No" /> No
             <div class="alert alert-danger" th:if="${#fields.hasErrors('isManager')}" th:errors="*{isManager}"></div>
 
             <h6>Is the Employee the CEO?</h6>
-            <input type ="radio" th:field ="*{isCeo}" value="Yes"/> Yes
-            <input type ="radio" th:field ="*{isCeo}" value="No" /> No
+            <input type="radio" th:field="*{isCeo}" value="Yes" /> Yes
+            <input type="radio" th:field="*{isCeo}" value="No" /> No
             <div class="alert alert-danger" th:if="${#fields.hasErrors('isCeo')}" th:errors="*{isCeo}"></div>
 
             <h6>Enter who the manager for this employee is, enter the Employee ID:</h6>
-            <input type ="text" th:field ="*{managerId}" class ="form-control mb-4 col-4">
-        
-            <button type ="submit" class="btn btn-info col-2"> Update Employee </button>
+            <input type="text" th:field="*{managerId}" class="form-control mb-4 col-4">
+
+            <button type="submit" class="btn btn-info col-2"> Update Employee </button>
         </form>
         <hr>
 
         <a th:href="@{/}"> Back to Employee List</a>
     </div>
-    
-    
+
+
 </body>
+
 </html>
