@@ -106,7 +106,7 @@ public class EmployeeController {
 
     // Same as above but for the UPDATEDEmployee!
     @PostMapping("/saveUpdatedEmployee")
-    public String saveUpdatedEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result)
+    public String saveUpdatedEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result, int id)
             throws SQLException {
         if (result.hasErrors()) {
             return "update_employee";
@@ -121,7 +121,7 @@ public class EmployeeController {
         // Function that sets variable as "true" but only if the ManagerId that is set
         // does have a correlating EmployeeId that is a manager otherwise "false".
         String isManagerIdAManager = employeeService.checkForEmployeeIdAsManagerId(employee);
-
+        String updateCurrentCeo = employeeService.isTheUpdatedEmployeeCurrentCeo(employee);
         // IF-statement if the employee that is created is the CEO.
         if (employee.getIsCeo().equals("Yes") && employee.getIsManager().equals("No")) {
             System.out.println("The CEO has to be a manager!");
@@ -130,7 +130,12 @@ public class EmployeeController {
         // IF-statment that if the created employee is CEO and is manager
         else if (employee.getIsCeo().equals("Yes") && employee.getIsManager().equals("Yes")
                 && employee.getManagerId().equals("")) {
-            if (areThereACeo.equals("true")) {
+            if(updateCurrentCeo.equals("true")){
+                // Save employee to database
+                employeeService.saveEmployee(employee);
+                System.out.println("Successfully added the employee");
+                return "redirect:/";
+            } else if (areThereACeo.equals("true")) {
                 System.out.println("There already is a CEO, please remove current CEO before adding a new one.");
                 return "update_employee";
             } else {

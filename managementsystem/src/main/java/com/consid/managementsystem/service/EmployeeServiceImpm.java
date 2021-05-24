@@ -62,6 +62,20 @@ public class EmployeeServiceImpm implements EmployeeService {
         return salary;
     }
 
+    //Function to check if the updatedEmployee is the current CEO
+    public String isTheUpdatedEmployeeCurrentCeo(Employee employee){
+        Employee ceoEmployee = getEmployeeById(employee.getId());
+
+        String checkForCeo = "";
+
+        if(ceoEmployee.getIsCeo().equals("Yes")){
+            checkForCeo = "true";
+            return checkForCeo;
+        }
+        checkForCeo = "false";
+        return checkForCeo;
+    }
+
     // Function to check if there is a CEO already pressent in the db.
     public String checkForCeo(@ModelAttribute("employee") Employee employee) {
         List<Employee> employeesInDb = getAllEmployees();
