@@ -23,6 +23,6 @@ Example: If Johan with EmployeeId 1 is manager of Ove, then Ove does have manage
 The database is named consid with the table employees. All you need to do is to create your own database in Workbench MySQL with w/e name you want. 
 Set the correct url, username and password in the application.properties, also set the the same information in FunctionsController.java in the function connectionForQuery().  
 
-After this you are good to go, fire up the program and go to: localhost:8080 and try it out. The program will enter all the variables to the database with each entry, create coloumns etc so you dont have to.
+After this you are good to go, fire up the program and go to: localhost:8080 and try it out. The program will enter all the variables to the database with each entry, create coloumns etc so you dont have to. When you create, update or delete the employee, check the console/terminal if the employee isnt created, deleted or updated, there is a chance that a violation to one of more of the conditions have been triggered.
 
 ------------------------------------------------------
